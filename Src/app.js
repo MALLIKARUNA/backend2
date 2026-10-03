@@ -27,7 +27,7 @@ app.post('/notes', async (req, res) => {
 app.get('/notes', async (req, res) => {
     // const note = await noteModel.find() 
     const note = await noteModel.findOne({
-        publish: 2023
+        // publish: 2023
     })
     /*
      find=>[{}{}]or [] =its return the object of array
@@ -38,6 +38,24 @@ app.get('/notes', async (req, res) => {
         notes: note
     })
 
+})
+app.delete('/notes/:id', async (req, res) => {
+    const id = req.params.id
+    await noteModel.findOneAndDelete({
+        _id: id
+        // why _id means in database _id is there 
+    })
+    res.status(200).json({
+        message: "note is deleted succesfully"
+    })
+})
+app.patch('/notes/:id', async (req, res) => {
+    const id = req.params.id
+    const description = req.body.description
+    await noteModel.findOneAndUpdate({ _id: id }, { description: description })
+    res.status(200).json({
+        message: "notes updated succesfully"
+    })
 })
 
 module.exports = app; 
